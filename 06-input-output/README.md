@@ -1,6 +1,6 @@
 # 🖥️ Java Input and Output (I/O)
 
-In Java, **Input and Output (I/O)** refers to the way a program interacts with the **user or external data sources**.  
+In Java, **Input and Output (I/O)** refers to the way a program interacts with the **user or external data sources**.
 The most common I/O in beginner programs is **console input and output**.
 
 ---
@@ -22,7 +22,7 @@ public class Main
         System.out.println("Welcome to Java I/O");
     }
 }
-````
+```
 
 **Output:**
 
@@ -76,9 +76,10 @@ Age: 25, Height: 5.9 feet
 
 ---
 
-## 🔹 2. Reading Input from the User
+## 🔹 2. Reading Input Safely from the User
 
 The `Scanner` class from `java.util` package is commonly used for console input.
+**Best practice:** always validate input before reading it to prevent exceptions.
 
 ### 2.1 Importing Scanner
 
@@ -92,7 +93,7 @@ import java.util.Scanner;
 Scanner scanner = new Scanner(System.in);
 ```
 
-### 2.3 Reading Different Types of Input
+### 2.3 Reading Input with Validation
 
 ```java
 import java.util.Scanner;
@@ -103,25 +104,72 @@ public class Main
     {
         Scanner scanner = new Scanner(System.in);
 
-        // Reading an integer
-        System.out.print("Enter your age: ");
-        int age = scanner.nextInt();
+        // 1. Reading an integer safely
+        int age;
+        while (true) 
+        {
+            System.out.print("Enter your age: ");
+            if (scanner.hasNextInt()) 
+            {
+                age = scanner.nextInt();
+                scanner.nextLine(); // consume leftover newline
+                break;
+            } 
+            else 
+            {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next(); // discard invalid token
+            }
+        }
 
-        // Reading a double
-        System.out.print("Enter your height: ");
-        double height = scanner.nextDouble();
+        // 2. Reading a double safely
+        double height;
+        while (true) 
+        {
+            System.out.print("Enter your height in meters: ");
+            if (scanner.hasNextDouble()) 
+            {
+                height = scanner.nextDouble();
+                scanner.nextLine(); // consume leftover newline
+                break;
+            } 
+            else 
+            {
+                System.out.println("Invalid input. Please enter a valid decimal number.");
+                scanner.next(); // discard invalid token
+            }
+        }
 
-        // Reading a single word (String)
-        System.out.print("Enter your name: ");
-        String name = scanner.next();
+        // 3. Reading a single word safely
+        String firstName;
+        while (true) 
+        {
+            System.out.print("Enter your first name: ");
+            if (scanner.hasNext()) 
+            {
+                firstName = scanner.next();
+                scanner.nextLine(); // consume leftover newline
+                break;
+            } 
+            else 
+            {
+                System.out.println("Invalid input. Please enter a word.");
+                scanner.next();
+            }
+        }
 
-        // Reading a full line (String)
-        scanner.nextLine(); // consume newline
+        // 4. Reading a full line safely
+        String address;
         System.out.print("Enter your address: ");
-        String address = scanner.nextLine();
+        while (!scanner.hasNextLine()) 
+        {
+            System.out.println("Invalid input. Please enter a line of text:");
+            scanner.next(); // discard invalid token
+        }
+        address = scanner.nextLine();
 
         System.out.println("\nYou entered:");
-        System.out.println("Name: " + name);
+        System.out.println("First Name: " + firstName);
         System.out.println("Age: " + age);
         System.out.println("Height: " + height);
         System.out.println("Address: " + address);
@@ -138,27 +186,56 @@ public class Main
 1. Always **import `java.util.Scanner`** when using Scanner.
 2. Use `scanner.close()` to **release system resources**.
 3. `next()` reads input until a space, `nextLine()` reads the **entire line**.
-4. For numeric input, ensure the user enters the **correct type** to avoid exceptions.
-5. Combine **`print`**, **`println`**, and **`printf`** for formatted and user-friendly messages.
+4. For numeric input, always **validate the type with `hasNextXxx()`** before reading.
+5. After reading numbers (`nextInt()` / `nextDouble()`), call `nextLine()` to **consume the leftover newline**.
+6. Combine **`print`**, **`println`**, and **`printf`** for formatted, user-friendly messages.
 
 ---
 
-## 🔹 4. Example: Simple Calculator
+## 🔹 4. Example: Safe Simple Calculator
 
 ```java
 import java.util.Scanner;
 
-public class Main 
+public class SafeCalculator 
 {
     public static void main(String[] args) 
     {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter first number: ");
-        double num1 = scanner.nextDouble();
+        double num1, num2;
 
-        System.out.print("Enter second number: ");
-        double num2 = scanner.nextDouble();
+        while (true) 
+        {
+            System.out.print("Enter first number: ");
+            if (scanner.hasNextDouble()) 
+            {
+                num1 = scanner.nextDouble();
+                scanner.nextLine();
+                break;
+            } 
+            else 
+            {
+                System.out.println("Invalid input. Enter a valid number.");
+                scanner.next();
+            }
+        }
+
+        while (true) 
+        {
+            System.out.print("Enter second number: ");
+            if (scanner.hasNextDouble()) 
+            {
+                num2 = scanner.nextDouble();
+                scanner.nextLine();
+                break;
+            } 
+            else 
+            {
+                System.out.println("Invalid input. Enter a valid number.");
+                scanner.next();
+            }
+        }
 
         double sum = num1 + num2;
         System.out.printf("The sum of %.2f and %.2f is %.2f%n", num1, num2, sum);

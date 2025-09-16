@@ -6,7 +6,7 @@
  *   - System.out.println(): Prints text with a newline.
  *   - System.out.printf(): Prints formatted text.
  *
- *   2- Input:
+ * 2- Input:
  *   - Scanner class: Used to read input from various sources (e.g., keyboard).
  *   - nextLine(): Reads a line of text.
  *   - nextInt(): Reads an integer.
@@ -17,36 +17,81 @@
 
 import java.util.Scanner;
 
-public class InputOutput {
-    public static void main(String[] args) {
+public class InputOutput
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+
         // Output examples
         System.out.print("This is printed without a newline. ");
         System.out.println("This is printed with a newline.");
         System.out.printf("Formatted number: %.2f%n", 123.456);
 
-        // Input examples
-        Scanner scanner = new Scanner(System.in);
-
         // 1. Reading a full line
+        String line;
         System.out.print("Enter a line of text: ");
-        String line = scanner.nextLine();
+        while (!scanner.hasNextLine())
+        {
+            System.out.println("Invalid input. Please enter a line of text:");
+            scanner.next(); // discard invalid token
+        }
+        line = scanner.nextLine();
         System.out.println("You entered: " + line);
 
         // 2. Reading an integer
-        System.out.print("Enter an integer: ");
-        int number = scanner.nextInt();
+        int number;
+        while (true)
+        {
+            System.out.print("Enter an integer: ");
+            if (scanner.hasNextInt())
+            {
+                number = scanner.nextInt();
+                scanner.nextLine(); // consume leftover newline
+                break;
+            }
+            else
+            {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next(); // discard invalid token
+            }
+        }
         System.out.println("You entered: " + number);
 
-
         // 3. Reading a double
-        System.out.print("Enter a double: ");
-        double decimal = scanner.nextDouble();
+        double decimal;
+        while (true)
+        {
+            System.out.print("Enter a double: ");
+            if (scanner.hasNextDouble())
+            {
+                decimal = scanner.nextDouble();
+                scanner.nextLine(); // consume leftover newline
+                break;
+            }
+            else
+            {
+                System.out.println("Invalid input. Please enter a valid double.");
+                scanner.next(); // discard invalid token
+            }
+        }
         System.out.println("You entered: " + decimal);
 
-
         // 4. Reading a single word
-        System.out.print("Enter a single word: ");
-        String word = scanner.next();
+        String word;
+        while (true)
+        {
+            System.out.print("Enter a single word: ");
+            if (scanner.hasNext())
+            {
+                word = scanner.next();
+                break;
+            } else
+            {
+                System.out.println("Invalid input. Please enter a word.");
+                scanner.next(); // discard invalid token
+            }
+        }
         System.out.println("You entered: " + word);
 
         scanner.close();
