@@ -10,11 +10,15 @@
  *
  * 3. Create an int variable counter = 0.
  *    - Use pre-increment (++counter) and print the value.
+ *    - Print the value inbetween
  *    - Use post-increment (counter++) and print the value.
+ *    - Print the value after
  *
  * 4. Create an int variable count = 5.
  *    - Use pre-decrement (--count) and print the value.
+ *    - Print the value inbetween
  *    - Use post-decrement (count--) and print the value.
+ *    - Print the value after
  *
  * Bonus:
  * 5. Combine unary operators with arithmetic:
